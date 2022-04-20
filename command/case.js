@@ -1,17 +1,17 @@
 /*
 # Haruka - UserBot
-# Copyright (C) 2022 Haruka-Bot Created By ZeeoneOfc
+# Copyright (C) 2021 Haruka-Bot Created By ZeeoneOfc
 #
-# This file is a part of < https://github.com/zeeone-ofc/Haruka/ >
+# This file is a part of < https://github.com/zeeoneofc/Haruka/ >
 # PLease read the GNU Affero General Public License in
-# <https://www.github.com/zeeone-ofc/Haruka/blob/v1/LICENSE/>.
+# <https://www.github.com/zeeoneofc/Haruka/blob/v1/LICENSE/>.
 */ 
 
 // WhatsApp api
 require('../settings/config.js')
 const
 	{
-		WAConnection: _WAConnection,
+		WAConnection,
 		MessageType,
 		Presence,
 		MessageOptions,
@@ -47,7 +47,7 @@ const speed = require('performance-now')
 const util = require('util')
 const yts = require( 'yt-search')
 const ytdl = require("ytdl-core")
-const zee = require('xfarr-api')
+const zee = require('api-alphabot')
 
 //library
 const { simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('../lib/functions')
@@ -82,7 +82,6 @@ module.exports = haruka = async (haruka, mek) => {
 		if (!mek.hasNewMessage) return
 		mek = mek.messages.all()[0]
 		if (!mek.message) return
-		m = simple.smsg(haruka, mek)
 		if (mek.key && mek.key.remoteJid == 'status@broadcast') return
 		mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
 		const content = JSON.stringify(mek.message)
@@ -93,7 +92,7 @@ module.exports = haruka = async (haruka, mek) => {
 		const type = Object.keys(mek.message)[0]        
 		const cmd = (type === 'conversation' && mek.message.conversation) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text ? mek.message.extendedTextMessage.text : ''.slice(1).trim().split(/ +/).shift().toLowerCase()
 		const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(cmd) ? cmd.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*,;]/gi) : '-'          	
-        body = (type === 'conversation' && mek.message.conversation.startsWith(prefix)) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption.startsWith(prefix) ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption.startsWith(prefix) ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text.startsWith(prefix) ? mek.message.extendedTextMessage.text : (type == "buttonsResponseMessage") && mek.message[type].selectedButtonId ? mek.message[type].selectedButtonId : type == "listResponseMessage" ? mek.message.listResponseMessage.singleSelectReply.selectedRowId : ''
+        body = (type === 'conversation' && mek.message.conversation.startsWith(prefix)) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption.startsWith(prefix) ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption.startsWith(prefix) ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text.startsWith(prefix) ? mek.message.extendedTextMessage.text : (type == "buttonsResponseMessage") && mek.message[type].selectedButtonId ? mek.message[type].selectedButtonId : ''
 		budy = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : ''
 		var pes = (type === 'conversation' && mek.message.conversation) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text ? mek.message.extendedTextMessage.text : ''
 		const manti = pes.slice(0).trim().split(/ +/).shift().toLowerCase()
@@ -533,7 +532,7 @@ if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button 
 				axios.get(`https://tinyurl.com/api-create.php?url=${audio}`)
 				.then(async (a) => {
 					audnha = await getBuffer(audio)
-					haruka.sendMessage(from,audnha , MessageType.document, {mimetype: 'audio/mpeg',filename: `Tiktok Music.mp3`,quoted: mek})
+					haruka.sendMessage(from,audnha , MessageType.document, {mimetype: 'audio/mp4',filename: `Tiktok Music.mp3`,quoted: mek})
 					})
 				}).catch((err) => reply(`Link tidak valid`))
 			
@@ -600,7 +599,7 @@ if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button 
 			var mulaikah = aramat[0].url
 			try {
 				zee.Youtube(mulaikah).then(async (data) => {
-					if (Number(data.medias[7].formattedSize) >= 100000) return sendMediaURL(from, thumb, `*PLAY MUSIC*\n\n*Title* : ${aramas.videos[0].title}\n*Ext* : MP3\n*Filesize* : ${data.medias[7].formattedSize}\n*Link* : ${aramas.videos[0].url}\n\n_Untuk durasi lebih dari batas disajikan dalam bentuk link_`)
+					if (Number(data.medias[7].formattedSize) >= 100000) return sendMediaURL(from, thumb, `*PLAY MUSIC*\n\n*Title* : ${title}\n*Ext* : MP3\n*Filesize* : ${filesizeF}\n*Link* : ${a.data}\n\n_Untuk durasi lebih dari batas disajikan dalam bentuk link_`)
 						const captions = `*---- 「 PLAY MUSIC 」----*
 						
 • Title : ${aramas.videos[0].title}
@@ -618,173 +617,6 @@ sendButLocation(from, captions, '© ' + ownername, thumbyt, [{buttonId: `.ytmp4 
 					}
 			
              break
-case 'spotify':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
-    url = args[0]
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/spotify?apikey=${lolkey}&url=${url}`)
-    get_result = get_result.result
-    ini_txt = `Title : ${get_result.title}\n`
-    ini_txt += `Artists : ${get_result.artists}\n`
-    ini_txt += `Duration : ${get_result.duration}\n`
-    ini_txt += `Popularity : ${get_result.popularity}\n`
-    ini_txt += `Preview : ${get_result.preview_url}\n`
-    thumbnail = await getBuffer(get_result.thumbnail)
-    await haruka.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
-    get_audio = await getBuffer(get_result.link)
-    await haruka.sendMessage(from, get_audio, audio, { mimetype: 'audio/mpeg', filename: `${get_result.title}.mp3`, quoted: mek})
-    }
-    break
-case 'spotifysearch':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
-    query = args.join(" ")
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/spotifysearch?apikey=${lolkey}&query=${query}`)
-    get_result = get_result.result
-    ini_txt = ""
-    for (var x of get_result) {
-        ini_txt += `Title : ${x.title}\n`
-        ini_txt += `Artists : ${x.artists}\n`
-        ini_txt += `Duration : ${x.duration}\n`
-        ini_txt += `Link : ${x.link}\n`
-        ini_txt += `Preview : ${x.preview_url}\n\n\n`
-    }
-    reply(ini_txt)}
-    break
-case 'nhentai':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} 344253`)
-    henid = args[0]
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/nhentai/${henid}?apikey=${lolkey}`)
-    get_result = get_result.result
-    ini_txt = `Title Romaji : ${get_result.title_romaji}\n`
-    ini_txt += `Title Native : ${get_result.title_native}\n`
-    ini_txt += `Read Online : ${get_result.read}\n`
-    get_info = get_result.info
-    ini_txt += `Parodies : ${get_info.parodies}\n`
-    ini_txt += `Character : ${get_info.characters.join(", ")}\n`
-    ini_txt += `Tags : ${get_info.tags.join(", ")}\n`
-    ini_txt += `Artist : ${get_info.artists}\n`
-    ini_txt += `Group : ${get_info.groups}\n`
-    ini_txt += `Languager : ${get_info.languages.join(", ")}\n`
-    ini_txt += `Categories : ${get_info.categories}\n`
-    ini_txt += `Pages : ${get_info.pages}\n`
-    ini_txt += `Uploaded : ${get_info.uploaded}\n`
-    reply(ini_txt)}
-    break
- case 'nhentaipdf':{
- 	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} 344253`)
-    henid = args[0]
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/nhentaipdf/${henid}?apikey=${lolkey}`)
-    get_result = get_result.result
-    ini_buffer = await getBuffer(get_result)
-    await haruka.sendMessage(from, ini_buffer, document, { quoted: mek, mimetype: Mimetype.pdf, filename: `${henid}.pdf` })
-    }
-    break
-case 'nhentaisearch':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
-    query = args.join(" ")
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/nhentaisearch?apikey=${lolkey}&query=${query}`)
-    get_result = get_result.result
-    ini_txt = "Result : \n"
-    for (var x of get_result) {
-        ini_txt += `Id : ${x.id}\n`
-        ini_txt += `Title English : ${x.title_english}\n`
-        ini_txt += `Title Japanese : ${x.title_japanese}\n`
-        ini_txt += `Native : ${x.title_native}\n`
-        ini_txt += `Upload : ${x.date_upload}\n`
-        ini_txt += `Page : ${x.page}\n`
-        ini_txt += `Favourite : ${x.favourite}\n\n`
-    }
-    reply(ini_txt)
-    }
-    break
-//maker ephoto
-case 'wetglass':case 'multicolor3d':case 'watercolor':case 'luxurygold':case 'galaxywallpaper':case 'lighttext':case 'beautifulflower':case 'puppycute':case 'royaltext':case 'heartshaped':case 'birthdaycake':case 'galaxystyle':case 'hologram3d':case 'greenneon':case 'glossychrome':case 'greenbush':case 'metallogo':case 'noeltext':case 'glittergold':case 'textcake':case 'starsnight':case 'wooden3d':case 'textbyname':case 'writegalacy':case 'galaxybat':case 'snow3d':case 'birthdayday':case 'goldplaybutton':case 'silverplaybutton':case 'freefire':{
-if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Haruka`)
-    ini_txt = args.join(" ")
-    var po = await getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${lolkey}&text=${ini_txt}`)
-    haruka.sendMessage(from, po, image, { quoted: mek, caption: "Selesai" })
-    }
-    break
-//maker textpro
-case 'blackpink':case 'neon':case 'greenneon':case 'advanceglow':case 'futureneon':case 'sandwriting':case 'sandsummer':case 'sandengraved':case 'metaldark':case 'neonlight':case 'holographic':case 'text1917':case 'minion':case 'deluxesilver':case 'newyearcard':case 'bloodfrosted':case 'halloween':case 'jokerlogo':case 'fireworksparkle':case 'natureleaves':case 'bokeh':case 'toxic':case 'strawberry':case 'box3d':case 'roadwarning':case 'breakwall':case 'icecold':case 'luxury':case 'cloud':case 'summersand':case 'horrorblood':case 'thunder':{
-if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Haruka`)
-    ini_txt = args.join(" ")
-    let gambar = await getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${lolkey}&text=${ini_txt}`)
-    haruka.sendMessage(from, gambar, image, { quoted: mek, caption: "Sukses" })
-    }
-    break
-//islami
-case 'listsurah':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    get = await fetchJson(`https://api.lolhuman.xyz/api/quran?apikey=${lolkey}`)
-    get_result = get.result
-    ini_txt = 'List Surah:\n'
-    for (var x in get_result) {
-        ini_txt += `${x}. ${get_result[x]}\n`
-    }
-    reply(ini_txt)
-    }
-    break
-case 'alquran':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length < 1) return reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10 or ${prefix + command} 18/1-10`)
-    urls = `https://api.lolhuman.xyz/api/quran/${args[0]}?apikey=${lolkey}`
-    quran = await fetchJson(urls)
-    result = quran.result
-    ayat = result.ayat
-    ini_txt = `QS. ${result.surah} : 1-${ayat.length}\n\n`
-    for (var x of ayat) {
-        arab = x.arab
-        nomor = x.ayat
-        latin = x.latin
-        indo = x.indonesia
-        ini_txt += `${arab}\n${nomor}. ${latin}\n${indo}\n\n`
-    }
-    ini_txt = ini_txt.replace(/<u>/g, "").replace(/<\/u>/g, "")
-    ini_txt = ini_txt.replace(/<strong>/g, "").replace(/<\/strong>/g, "")
-    ini_txt = ini_txt.replace(/<u>/g, "").replace(/<\/u>/g, "")
-    reply(ini_txt)}
-    break
-case 'asmaulhusna':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/asmaulhusna?apikey=${lolkey}`)
-    get_result = get_result.result
-    ini_txt = `No : ${get_result.index}\nLatin: ${get_result.latin}\nArab : ${get_result.ar}\nIndonesia : ${get_result.id}\nEnglish : ${get_result.en}`
-    reply(ini_txt)}
-    break
-case 'kisahnabi':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Muhammad`)
-    query = args.join(" ")
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/kisahnabi/${query}?apikey=${lolkey}`)
-    get_result = get_result.result
-    ini_txt = `Name : ${get_result.name}\nLahir : ${get_result.thn_kelahiran}\nUmur : ${get_result.age}\nTempat : ${get_result.place}\nStory : \n${get_result.story}`
-    reply(ini_txt)}
-    break
-case 'alquranaudio':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10`)
-    surah = args[0]
-    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/quran/audio/${surah}?apikey=${lolkey}`)
-    await haruka.sendMessage(from, ini_buffer, audio, { quoted: mek, mimetype: 'audio/mpeg' })
-    }
-    break
-case 'jadwalsholat':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-    if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
-    daerah = args.join(" ")
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/sholat/${daerah}?apikey=${lolkey}`)
-    get_result = get_result.result
-    ini_txt = `Wilayah : ${get_result.wilayah}\nTanggal : ${get_result.tanggal}\nSahur : ${get_result.sahur}\nImsak : ${get_result.imsak}\nSubuh : ${get_result.subuh}\nTerbit : ${get_result.terbit}\nDhuha : ${get_result.dhuha}\nDzuhur : ${get_result.dzuhur}\nAshar : ${get_result.ashar}\nMaghrib : ${get_result.imsak}\nIsya : ${get_result.isya}`
-    reply(ini_txt)}
-    break
-
 //group
 case 'daftar': case 'verify': case 'verif':
 			if (isHaruka) return  reply(lang.regis())
@@ -877,7 +709,7 @@ if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button 
 			mem.push(adm.id.replace('c.us', 's.whatsapp.net'))
 			})
 			var options = {
-			text: value ? value :' ',
+			text: value,
 			contextInfo: { mentionedJid: mem },
 			quoted: mek
 			}
@@ -930,7 +762,7 @@ if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button 
 			reply(`Succses kick target!`)
 break
 case 'bc': case 'broadcast':
-			if (!isOwner) return reply(lang.owner(botname))
+			if (!(mek.key.fromMe && isOwner)) return reply(lang.owner(botname))
 			if (args.length === 0) return reply(`Kirim perintah *${prefix + command}* text`)
 			var bcnya = await haruka.chats.all()
 			if (isMedia && !mek.message.videoMessage || isQuotedImage) {
@@ -948,7 +780,7 @@ case 'bc': case 'broadcast':
 					}
 					break      
 case 'nightcore':{
-	 if (!isQuotedAudio) return reply('Reply audio nya om')
+	                 if (!isQuotedAudio) return reply('Reply audio nya om')
 					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await haruka.downloadAndSaveMediaMessage(encmedia)
 					ran = getRandom('.mp3')
@@ -956,7 +788,7 @@ case 'nightcore':{
 						fs.unlinkSync(media)
 						if (err) return reply('Error!')
 						hah = fs.readFileSync(ran)
-						haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt:true, quoted: mek,duration:99999999999999999999999})
+						haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek,duration:99999999999999999999999})
 						fs.unlinkSync(ran)
 					   })}
 				  break      
@@ -968,7 +800,7 @@ case 'bass': {
 										fs.unlinkSync(media)
 										if (err) return reply('Error!')
 										hah = fs.readFileSync(ran)
-										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt:true, quoted: mek, duration:99999999999999999999999})
+										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek, duration:99999999999999999999999})
 										fs.unlinkSync(ran)
 										})}
 										break    
@@ -981,7 +813,7 @@ case 'slowmo': case 'slow':{
 											fs.unlinkSync(media)
 											if (err) return reply('Error!')
 											uhh = fs.readFileSync(ran)
-											haruka.sendMessage(from, uhh, audio, {mimetype: 'audio/mpeg', ptt:true, quoted: mek})
+											haruka.sendMessage(from, uhh, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
 											fs.unlinkSync(ran)
 											})
 											} catch (e) {
@@ -998,7 +830,7 @@ case 'robot':{
 										fs.unlinkSync(media)
 										if (err) return reply('Error!')
 										hah = fs.readFileSync(ran)
-										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt: true, quoted: mek})
+										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted: mek})
 										fs.unlinkSync(ran)
 										})
 										}
@@ -1011,7 +843,7 @@ case 'vibra': case 'vibrato':{
 										fs.unlinkSync(media)
 										if (err) return reply('Error!')
 										hah = fs.readFileSync(ran)
-										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt: true, quoted: mek})
+										haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted: mek})
 										fs.unlinkSync(ran)
 										})
 										}
@@ -1025,7 +857,7 @@ case 'tupai':{
 											fs.unlinkSync(media)
 											if (err) return reply('Error!')
 											hah = fs.readFileSync(ran)
-											haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt:true, quoted: mek,duration: 999099})
+											haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek,duration: 999099})
 											fs.unlinkSync(ran)
 											})
 											 } catch (e) {	
@@ -1042,7 +874,7 @@ case 'fast':{
 											fs.unlinkSync(media)
 											if (err) return reply('Error!')
 											hah = fs.readFileSync(ran)
-											haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mpeg', ptt:true, quoted: mek})
+											haruka.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
 											fs.unlinkSync(ran)
 											})
 											} catch (e) {
@@ -1215,7 +1047,7 @@ try{
                     txt += `*• Url  :* ${data.url}\n\n`
                     txt += `*Mohon tunggu sebentar, sedang proses pengiriman...*`
                     sendFileFromUrl(from, data.thumbnail, txt, mek)
-                    haruka.sendMessage(from , await getBuffer(data.medias[0].url), audio,{ quoted: mek, mimetype: 'audio/mpeg' })
+                    haruka.sendMessage(from , await getBuffer(data.medias[0].url), audio,{ quoted: mek, mimetype: 'audio/mp4' })
 				})
 			break
 	case 'telesticker': case 'tstiker': {
@@ -1298,311 +1130,11 @@ if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button 
                     sendFileFromUrl(from, data.medias[1].url, '', mek)                    
                 })
                 }
-             break    
-//anime search
-case 'character':
-if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Sakura`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/character?apikey=${lolkey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Id : ${get_result.id}\nName : ${get_result.name.full}\nNative : ${get_result.name.native}\nFavorites : ${get_result.favourites}\nMedia : \n`
-                    ini_media = get_result.media.nodes
-                    for (var x of ini_media) {
-                        ini_txt += `- ${x.title.romaji} (${x.title.native})\n`
-                    }
-                    ini_txt += `\nDescription : \n${get_result.description.replace(/__/g, "_")}`
-                    thumbnail = await getBuffer(get_result.image.large)
-                    await haruka.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
-                    break
-case 'anime':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/anime?apikey=${lolkey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Id : ${get_result.id}\nId MAL : ${get_result.idMal}\nTitle : ${get_result.title.romaji}\nEnglish : ${get_result.title.english}\nNative : ${get_result.title.native}\nFormat : ${get_result.format}\nEpisodes : ${get_result.episodes}\nDuration : ${get_result.duration} mins.\nStatus : ${get_result.status}\nSeason : ${get_result.season}\nSeason Year : ${get_result.seasonYear}\nSource : ${get_result.source}\nStart Date : ${get_result.startDate.day} - ${get_result.startDate.month} - ${get_result.startDate.year}\nEnd Date : ${get_result.endDate.day} - ${get_result.endDate.month} - ${get_result.endDate.year}\nGenre : ${get_result.genres.join(", ")}\nSynonyms : ${get_result.synonyms.join(", ")}\nScore : ${get_result.averageScore}%\nCharacters : \n`
-                    ini_character = get_result.characters.nodes
-                    for (var x of ini_character) {
-                        ini_txt += `- ${x.name.full} (${x.name.native})\n`
-                    }
-                    ini_txt += `\nDescription : ${get_result.description}`
-                    thumbnail = await getBuffer(get_result.coverImage.large)
-                    await haruka.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })}
-                    break
-case 'manga':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/manga?apikey=${lolkey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Id : ${get_result.id}\nId MAL : ${get_result.idMal}\nTitle : ${get_result.title.romaji}\nEnglish : ${get_result.title.english}\nNative : ${get_result.title.native}\nFormat : ${get_result.format}\nChapters : ${get_result.chapters}\nVolume : ${get_result.volumes}\nStatus : ${get_result.status}\nSource : ${get_result.source}\nStart Date : ${get_result.startDate.day} - ${get_result.startDate.month} - ${get_result.startDate.year}\nEnd Date : ${get_result.endDate.day} - ${get_result.endDate.month} - ${get_result.endDate.year}\nGenre : ${get_result.genres.join(", ")}\nSynonyms : ${get_result.synonyms.join(", ")}\nScore : ${get_result.averageScore}%\nCharacters : \n`
-                    ini_character = get_result.characters.nodes
-                    for (var x of ini_character) {
-                        ini_txt += `- ${x.name.full} (${x.name.native})\n`
-                    }
-                    ini_txt += `\nDescription : ${get_result.description}`
-                    thumbnail = await getBuffer(get_result.coverImage.large)
-                    await haruka.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })}
-                    break                     
-case 'kusonime':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://kusonime.com/nanatsu-no-taizai-bd-batch-subtitle-indonesia/`)
-                    ini_url = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/kusonime?apikey=${lolkey}&url=${ini_url}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\nJapanese : ${get_result.japanese}\nGenre : ${get_result.genre}\nSeasons : ${get_result.seasons}\nProducers : ${get_result.producers}\nType : ${get_result.type}\nStatus : ${get_result.status}\nTotal Episode : ${get_result.total_episode}\nScore : ${get_result.score}\nDuration : ${get_result.duration}\nReleased On : ${get_result.released_on}\nDesc : ${get_result.desc}\n`
-                    link_dl = get_result.link_dl
-                    for (var x in link_dl) {
-                        ini_txt += `\n${x}\n`
-                        for (var y in link_dl[x]) {
-                            ini_txt += `${y} - ${link_dl[x][y]}\n`
-                        }
-                    }
-                    ini_buffer = await getBuffer(get_result.thumbnail)
-                    await haruka.sendMessage(from, ini_buffer, image, { quoted: mek, caption: ini_txt })}
-                    break
-case 'kusonimesearch':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/kusonimesearch?apikey=${lolkey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\nJapanese : ${get_result.japanese}\nGenre : ${get_result.genre}\nSeasons : ${get_result.seasons}\nProducers : ${get_result.producers}\nType : ${get_result.type}\nStatus : ${get_result.status}\nTotal Episode : ${get_result.total_episode}\nScore : ${get_result.score}\nDuration : ${get_result.duration}\nReleased On : ${get_result.released_on}\nDesc : ${get_result.desc}\n`
-                    link_dl = get_result.link_dl
-                    for (var x in link_dl) {
-                        ini_txt += `\n${x}\n`
-                        for (var y in link_dl[x]) {
-                            ini_txt += `${y} - ${link_dl[x][y]}\n`
-                        }
-                    }
-                    ini_buffer = await getBuffer(get_result.thumbnail)
-                    await haruka.sendMessage(from, ini_buffer, image, { quoted: mek, caption: ini_txt })
-                    }
-                    break
-case 'otakudesu':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://otakudesu.tv/lengkap/pslcns-sub-indo/`)
-                    ini_url = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/otakudesu?apikey=${lolkey}&url=${ini_url}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\nJapanese : ${get_result.japanese}\nJudul : ${get_result.judul}\nType : ${get_result.type}\nEpisode : ${get_result.episodes}\nAired : ${get_result.aired}\nProducers : ${get_result.producers}\nGenre : ${get_result.genres}\nDuration : ${get_result.duration}\nStudios : ${get_result.status}\nRating : ${get_result.rating}\nCredit : ${get_result.credit}\n`
-                    get_link = get_result.link_dl
-                    for (var x in get_link) {
-                        ini_txt += `\n\n*${get_link[x].title}*\n`
-                        for (var y in get_link[x].link_dl) {
-                            ini_info = get_link[x].link_dl[y]
-                            ini_txt += `\n\`\`\`Reso : \`\`\`${ini_info.reso}\n`
-                            ini_txt += `\`\`\`Size : \`\`\`${ini_info.size}\n`
-                            ini_txt += `\`\`\`Link : \`\`\`\n`
-                            down_link = ini_info.link_dl
-                            for (var z in down_link) {
-                                ini_txt += `${z} - ${down_link[z]}\n`
-                            }
-                        }
-                    }
-                    reply(ini_txt)}
-                    break
-case 'otakudesusearch':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/otakudesusearch?apikey=${lolkey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\nJapanese : ${get_result.japanese}\nJudul : ${get_result.judul}\nType : ${get_result.type}\nEpisode : ${get_result.episodes}\nAired : ${get_result.aired}\nProducers : ${get_result.producers}\nGenre : ${get_result.genres}\nDuration : ${get_result.duration}\nStudios : ${get_result.status}\nRating : ${get_result.rating}\nCredit : ${get_result.credit}\n`
-                    get_link = get_result.link_dl
-                    for (var x in get_link) {
-                        ini_txt += `\n\n*${get_link[x].title}*\n`
-                        for (var y in get_link[x].link_dl) {
-                            ini_info = get_link[x].link_dl[y]
-                            ini_txt += `\n\`\`\`Reso : \`\`\`${ini_info.reso}\n`
-                            ini_txt += `\`\`\`Size : \`\`\`${ini_info.size}\n`
-                            ini_txt += `\`\`\`Link : \`\`\`\n`
-                            down_link = ini_info.link_dl
-                            for (var z in down_link) {
-                                ini_txt += `${z} - ${down_link[z]}\n`
-                            }
-                        }
-                    }
-                    reply(ini_txt)}
-                    break
-//random text
-case 'pantun': case 'puisi': case 'bucinquote': case 'dilanquote': case 'katasenja': case 'motivasi':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/${command}?apikey=${zenzkey}`)
-	reply(txt.result.message)
-	}
-	break
-case 'randomquote':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/random/quote?apikey=${zenzkey}`)
-	reply(txt.result.message)
-	}
-	break
-case 'quotemuslim':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/randomquote/muslim?apikey=${zenzkey}`)
-	reply(txt.result.message)
-	}
-	break
-case 'quotesgalau':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/quotes/galau?apikey=${zenzkey}`)
-	reply(txt.result.message)
-	}
-	break
-case 'creepyfact':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/creepyfact?apikey=${zenzkey}`)
-	reply(txt.result.message)
-	}
-	break
-case 'cerpen':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/cerpen?apikey=${zenzkey}`)
-	reply('Judul : ' + txt.result.Judul + '\n' + 'Penulis : ' + txt.result.Penulis + '\n' + 'Sumber : ' + txt.result.sumber + '\n' + 'Cerita : ' + txt.result.cerita)
-	}
-	break
-case 'cersex':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/cersex?apikey=${zenzkey}`)
-	reply('Judul : ' + txt.result.Judul + '\n' + 'Cerita : ' + txt.result.Cerita)
-	}
-	break
-case 'cersex2':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/cersex2?apikey=${zenzkey}`)
-	haruka.sendMessage(from, await getBuffer(txt.result.Thumb), MessageType.image,{quoted: mek, caption: 'Judul : ' + txt.result.Judul + '\n' + 'Cerita : ' + txt.result.Cerita})
-	}
-	break
-case 'huluh': case 'hilih': case 'heleh' : case 'halah': case 'reversetext':{
-	if (args.length == 0) return reply(`Example: ${prefix + command} Haruka`)
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/${command}?query=${q}&apikey=${zenzkey}`)
-	reply(txt.result)
-	}
-	break
-case 'cercreepy':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fecthJson(`https://zenzapi.xyz/api/cercreepy?apikey=${zenzkey}`)
-	reply('Judul : ' + txt.result.Judul + '\n' + 'Cerita : ' + txt.result.Cerita)
-	}
-	break
-case 'faktaunik':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/faktaunik?apikey=${zenzkey}`)
-	reply(txt.result)
-	}
-	break
-case 'quotetrump':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/trumpquotes?apikey=${zenzkey}`)
-	reply('En : ' + txt.result.en + '\n' + 'Id : ' + txt.result.id)
-	}
-	break
-case 'animequote':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/animequotes?apikey=${zenzkey}`)
-	reply('Anime : ' + txt.result.anime + '\n' + 'Karakter : ' + txt.result.character + '\n' + 'En : ' + txt.result.en + '\n' + 'Id : ' + txt.result.id)
-	}
-	break
-case 'animequote2':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/animequotes2?apikey=${zenzkey}`)
-	haruka.sendMessage(from, await getBuffer(txt.result.thumb), MessageType.image, {quoted: mek, caption: 'Anime : ' + txt.result.anime + '\n' + 'Karakter : ' + txt.result.character + '\n' + 'Episode : ' + txt.result.episode + '\n' + 'Quotes : ' + txt.result.quotes})
-	}
-	break
-case 'trumpthink':{
-	if (!isHaruka) return sendButMessage(from, lang.noregis(pushname), `Klik Button Untuk Verify`, [{buttonId: '.daftar',buttonText: {displayText: `Daftar`,},type: 1,}], {quoted: fgif});
-	let txt = await fetchJson(`https://zenzapi.xyz/api/trumpthink?apikey=${zenzkey}`)
-	reply('En : ' + txt.result.en + '\n' + 'Id : ' + txt.result.id)
-	}
-	break
-case 'antidelete':{
-if (!isOwner) return reply(lang.owner(botname))
-if (args[0] === "on") {
-if (global.anti_delete === true) return reply('Kyk nya udh on')
-global.anti_delete = true
-reply('✅ Anti delete berhasil di aktifkan')
-} else if (args[0] === "off") {
-if (global.anti_delete === false) return
-global.anti_delete = false
-reply('✅ Anti delete berhasil di non aktifkan')
-} else if (!q) {
-sendButMessage(from, `MODE ANTI DELETE`, `Choose one`, [{buttonId: '.antidelete on',buttonText: {displayText: `On`,},type: 1,},{buttonId: '.antidelete off',buttonText: {displayText: `Off`,},type: 1,},]);}}
-break;
-case 'd':case 'del':case 'delete':{
-haruka.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
-}
-break
-case 'anticall':{
-if (!isOwner) return reply(lang.owner(botname))
-if (args[0] === "on") {
-if (global.anticall === true) return reply('Kyk nya udh on')
-global.anticall = true
-reply('✅ Anti call berhasil di aktifkan')
-} else if (args[0] === "off") {
-if (global.anticall === false) return
-global.anticall = false
-reply('✅ Anti call berhasil di non aktifkan')
-} else if (!q) {
-sendButMessage(from, `MODE ANTI CALL`, `Choose one`, [{buttonId: '.anticall on',buttonText: {displayText: `On`,},type: 1,},{buttonId: '.anticall off',buttonText: {displayText: `Off`,},type: 1,},]);}}
-break;
-case "listonline": {
-        let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat;
-        try {
-          let online = [
-            ...Object.keys(haruka.chats.get(id).presences),
-            haruka.user.jid,
-          ];
-          haruka.reply(
-            m.chat,
-            "*「 L I S T   O N L I N E  」*\n" +
-              online.map((v) => "├ @" + v.replace(/@.+/, "")).join`\n` +
-              "\n",
-            m,
-            {
-              contextInfo: { mentionedJid: online },
-            }
-          );
-        } catch (e) {
-          m.reply("");
-        }}
-        break;
-case 'nami': case 'copper': case 'naruto':  case 'zoro': case 'ussop': case 'minato': case 'sasuke': case 'sakura':case 'luffy': case 'sanji':  case 'boruto': case 'sarada': case 'mitsuki': case 'orochimaru': case 'tsunade': case 'kakashi': case 'killua': case 'gon': case 'rimuru': case 'sagiri': case 'natsu': case 'tanjirou': case 'nezuko': case 'senku':
-            {
-			try{	
-            let txt = await fetchJson(`https://myselfff.herokuapp.com/docs/anime/${command}`)            
-            haruka.sendMessage(from, await getBuffer(txt.result.list), MessageType.image, {caption: 'Wibu 👀', quoted: mek})            
-            } catch (e) {
-			m.reply('Server error')
-			}}	    	    	
-            break
- case 'sider':{
- try{
-                shape = '✓ '
-infom = await haruka.messageInfo(from, mek.message.extendedTextMessage.contextInfo.stanzaId)
-tagg = []
-teks = `Telah Dibaca Oleh :\n\n`
-for(let i of infom.reads){
-teks += shape+' ' + '@' + i.jid.split('@')[0] + '\n'
-teks += `> Waktu : ` + moment(`${i.t}` * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss') + '\n\n'
-tagg.push(i.jid)
-}
-mentions(teks, tagg, true)
-} catch {
-	m.reply('')
-	}}
-					break   
-case 'd':case 'del':case 'delete':{
-	if (!isOwner) return reply(lang.owner(botname))
-haruka.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
-}
-break
-default:
+             break                         
+		default:
 if (budy.startsWith('>')){
 try {
-	if (!isOwner) return reply(lang.owner(botname))
+	if (!(mek.key.fromMe && isOwner)) return reply(lang.owner(botname))
 return haruka.sendMessage(from, JSON.stringify(eval(budy.slice(2)),null,'\t'),text, {quoted: mek})
 } catch(err) {
 e = String(err)
@@ -1610,7 +1142,7 @@ reply(e)
 }
 }  
 if (budy.startsWith('$')){
-if (!isOwner) return reply(lang.owner(botname))
+if (!(mek.key.fromMe && isOwner)) return reply(lang.owner(botname))
 qur = budy.slice(2)
 exec(qur, (err, stdout) => {
 if (err) return reply(`HarukaBot :~ ${err}`)
@@ -1620,7 +1152,7 @@ reply(stdout)
 })
 }
 if (budy.startsWith('=>')){
-if (!isOwner) return reply(lang.owner(botname))
+if (!(mek.key.fromMe && isOwner)) return reply(lang.owner(botname))
 var konsol = budy.slice(3)
 Return = (sul) => {
 var sat = JSON.stringify(sul, null, 2)
