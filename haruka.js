@@ -1,7 +1,7 @@
 require('./settings/config.js')
 const
 	{
-		WAConnection: _WAConnection,
+		WAConnection,
 		MessageType,
 		Presence,
 		MessageOptions,
@@ -16,9 +16,7 @@ const
 		mentionedJid,
 		processTime,
 	} = require("@adiwajshing/baileys")
-const simple = require("./lib/simple.js");
 const fs = require('fs')
-const WAConnection = simple.WAConnection(_WAConnection);
 const { banner, getBuffer, start, success } = require('./lib/functions')
 const { color } = require('./lib/color')
 const CFonts  = require('cfonts')
@@ -120,44 +118,6 @@ const starts = async (haruka = new WAConnection()) => {
 					console.log('Error : %s', color(e, 'red'))
 					}
 		})
-
-antidel = global.anti_delete
-haruka.on('message-delete', async (m) => {
-if (m.key.remoteJid == 'status@broadcast') return
-if (!m.key.fromMe && m.key.fromMe) return
-if (antidel === false) return
-m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message
-const jam = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-let d = new Date
-let locale = 'id'
-let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
-let weton = ['Pahing', 'Pon','Wage','Kliwon','Legi'][Math.floor(((d * 1) + gmt) / 84600000) % 5]
-let week = d.toLocaleDateString(locale, { weekday: 'long' })
-let calender = d.toLocaleDateString(locale, {
-day: 'numeric',
-month: 'long',
-year: 'numeric'
-})
-const type = Object.keys(m.message)[0] 
-haruka.sendMessage(m.key.remoteJid, `*A N T I  - D E L E T E *
-
-Name : @${m.participant.split("@")[0]}
-Day :  ${week} ${calender}
-Time : ${jam}
-Type : ${type}`, MessageType.text, {quoted: m.message, contextInfo: {"mentionedJid": [m.participant]}})
-
-haruka.copyNForward(m.key.remoteJid, m.message, {quoted: falfaa})
-})
-antical = global.anticall     
-haruka.on('CB:action,,call', async json => {
-if (antical === false) return
-        const callerId = json[2][0][1].from;
-        var vcard = 'BEGIN:VCARD\n' + 'VERSION:3.0\n' + 'FN:' + `${global.ownername}` + '\n' + `ORG:Creator ${global.botname}\n` + 'TEL;type=CELL;type=VOICE;waid=' + `${global.ownernumber}` + ':+' + `${global.ownernumber}` + '\n' + 'END:VCARD'
-        haruka.sendMessage(callerId, `*Sorry ${haruka.user.name} can't receive calls.*\n*Call = Block!*`, MessageType.text)
-        haruka.sendMessage(callerId, { displayname: `${global.ownername}`, vcard: vcard}, MessageType.contact, {contextInfo: { externalAdReply:{title: `Creator ${setting.botname}`,body:"",previewType:"PHOTO",thumbnail: global.thumbnail ,sourceUrl:`https://wa.me/${global.ownernumber}?text=Assalamualaikum om, buka blokir saya`}}})
-        await sleep(5000)
-        await haruka.blockUser(callerId, "add")
-        })
 }
 	
 /**
